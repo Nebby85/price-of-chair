@@ -1,4 +1,5 @@
-import pymongo, os
+import pymongo
+import os
 
 __author__ = 'nebby85'
 
