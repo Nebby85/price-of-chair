@@ -1,14 +1,58 @@
-body { padding-top: 70px; }
-
-.form {
+.form-size {
     max-width: 640px;
-    margin: 0 auto;
+    margin: 25px auto;
 
     background-color: #E9E9E9;
     padding: 20px;
 
-    border: 1px solid #D5D5D5;
+    border: 1px solid #C9C9C9;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+}
+
+.btn-freo {
+  color: #ffffff;
+  background-color: #666666;
+  border-color: #000000;
+}
+
+.btn-freo:hover,
+.btn-freo:focus,
+.btn-freo:active,
+.btn-freo.active,
+.open .dropdown-toggle.btn-freo {
+  color: #ffffff;
+  background-color: #FF8707;
+  border-color: #000000;
+}
+
+.btn-freo:active,
+.btn-freo.active,
+.open .dropdown-toggle.btn-freo {
+  background-image: none;
+}
+
+.btn-freo.disabled,
+.btn-freo[disabled],
+fieldset[disabled] .btn-freo,
+.btn-freo.disabled:hover,
+.btn-freo[disabled]:hover,
+fieldset[disabled] .btn-freo:hover,
+.btn-freo.disabled:focus,
+.btn-freo[disabled]:focus,
+fieldset[disabled] .btn-freo:focus,
+.btn-freo.disabled:active,
+.btn-freo[disabled]:active,
+fieldset[disabled] .btn-freo:active,
+.btn-freo.disabled.active,
+.btn-freo[disabled].active,
+fieldset[disabled] .btn-freo.active {
+  background-color: #666666;
+  border-color: #000000;
+}
+
+.btn-freo .badge {
+  color: #666666;
+  background-color: #ffffff;
 }

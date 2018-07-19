@@ -1,6 +1,6 @@
 import pymongo
 
-__author__ = 'jslvtr'
+__author__ = 'nebby85'
 
 
 class Database(object):
@@ -8,9 +8,9 @@ class Database(object):
     DATABASE = None
 
     @staticmethod
-    def initialize():
+    def initialise():
         client = pymongo.MongoClient(Database.URI)
-        Database.DATABASE = client['fullstack']
+        Database.DATABASE = client["fullstack"]
 
     @staticmethod
     def insert(collection, data):
@@ -30,4 +30,4 @@ class Database(object):
 
     @staticmethod
     def remove(collection, query):
-        return Database.DATABASE[collection].remove(query)
+        Database.DATABASE[collection].remove(query)

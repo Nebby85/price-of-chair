@@ -1,24 +1,25 @@
-import uuid
 import datetime
+import uuid
 import requests
-from src.common.database import Database
 import src.models.alerts.constants as AlertConstants
+from src.common.database import Database
 from src.models.items.item import Item
+from src.app import app
 
-__author__ = 'jslvtr'
+__author__ = 'nebby85'
 
 
 class Alert(object):
     def __init__(self, user_email, price_limit, item_id, active=True, last_checked=None, _id=None):
         self.user_email = user_email
         self.price_limit = price_limit
-        self.active = active
         self.item = Item.get_by_id(item_id)
         self.last_checked = datetime.datetime.utcnow() if last_checked is None else last_checked
         self._id = uuid.uuid4().hex if _id is None else _id
+        self.active = active
 
     def __repr__(self):
-        return "<Alert for {} on item {} with price {}>".format(self.user_email, self.item.name, self.price_limit)
+        return "<Alert for {} on item {} with price {}>".format(self.user_email.email, self.item.name, self.price_limit)
 
     def send(self):
         return requests.post(
@@ -28,7 +29,8 @@ class Alert(object):
                 "from": AlertConstants.FROM,
                 "to": self.user_email,
                 "subject": "Price limit reached for {}".format(self.item.name),
-                "text": "We've found a deal! ({}).".format(self.item.url)
+                "text": "We've found a deal!\n{}\n\nTo navigate to the alert, visit {}".format(
+                    self.item.url, "http://{}/alerts/{}".format(app.config['SITE_URL'], self._id))
             }
         )
 
@@ -38,10 +40,10 @@ class Alert(object):
         return [cls(**elem) for elem in Database.find(AlertConstants.COLLECTION,
                                                       {"last_checked":
                                                            {"$lte": last_updated_limit},
-                                                  "active": True
+                                                       "active": True
                                                        })]
 
-    def save_to_mongo(self):
+    def save_to_db(self):
         Database.update(AlertConstants.COLLECTION, {"_id": self._id}, self.json())
 
     def json(self):
@@ -57,8 +59,8 @@ class Alert(object):
     def load_item_price(self):
         self.item.load_price()
         self.last_checked = datetime.datetime.utcnow()
-        self.item.save_to_mongo()
-        self.save_to_mongo()
+        self.item.save_to_db()
+        self.save_to_db()
         return self.item.price
 
     def send_email_if_price_reached(self):
@@ -75,11 +77,11 @@ class Alert(object):
 
     def deactivate(self):
         self.active = False
-        self.save_to_mongo()
+        self.save_to_db()
 
     def activate(self):
         self.active = True
-        self.save_to_mongo()
+        self.save_to_db()
 
     def delete(self):
         Database.remove(AlertConstants.COLLECTION, {'_id': self._id})

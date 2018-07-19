@@ -3,7 +3,7 @@ from src.common.database import Database
 import src.models.stores.constants as StoreConstants
 import src.models.stores.errors as StoreErrors
 
-__author__ = 'jslvtr'
+__author__ = 'nebby85'
 
 
 class Store(object):
@@ -17,6 +17,9 @@ class Store(object):
     def __repr__(self):
         return "<Store {}>".format(self.name)
 
+    def save_to_db(self):
+        Database.update(StoreConstants.COLLECTION, {'_id': self._id}, self.json())
+
     def json(self):
         return {
             "_id": self._id,
@@ -26,19 +29,9 @@ class Store(object):
             "query": self.query
         }
 
-    def delete(self):
-        Database.remove(StoreConstants.COLLECTION, {'_id': self._id})
-
-    @classmethod
-    def all(cls):
-        return [cls(**elem) for elem in Database.find(StoreConstants.COLLECTION, {})]
-
     @classmethod
     def get_by_id(cls, id):
         return cls(**Database.find_one(StoreConstants.COLLECTION, {"_id": id}))
-
-    def save_to_mongo(self):
-        Database.update(StoreConstants.COLLECTION, {'_id': self._id}, self.json())
 
     @classmethod
     def get_by_name(cls, store_name):
@@ -51,7 +44,7 @@ class Store(object):
     @classmethod
     def find_by_url(cls, url):
         """
-        Return a store from a url like "http://www.johnlewis.com/item/sdfj4h5g4g21k.html"
+        Return a store from a url like "http://www.webstore.com/items/nirqeinvq3iorvmq.html
         :param url: The item's URL
         :return: a Store, or raises a StoreNotFoundException if no store matches the URL
         """
@@ -60,4 +53,11 @@ class Store(object):
                 store = cls.get_by_url_prefix(url[:i])
                 return store
             except:
-                raise StoreErrors.StoreNotFoundException("The URL Prefix used to find the store didn't give us any results!")
+                raise StoreErrors.StoreNotFoundException("The URL Prefix used to find the store didn't give any results!")
+
+    @classmethod
+    def all(cls):
+        return [cls(**elem) for elem in Database.find(StoreConstants.COLLECTION, {})]
+
+    def delete(self):
+        Database.remove(StoreConstants.COLLECTION, {'_id': self._id})

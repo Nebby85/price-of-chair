@@ -1,14 +1,14 @@
 from passlib.hash import pbkdf2_sha512
 import re
 
-__author__ = 'jslvtr'
+__author__ = 'nebby85'
 
 
 class Utils(object):
 
     @staticmethod
     def email_is_valid(email):
-        email_address_matcher = re.compile('^[\w-]+@([\w-]+\.)+[\w]+$')
+        email_address_matcher = re.compile('^(?!\.)(?!.*--)(?!.*\.\.)([\w-]*\.)*[\w-]+@([\w-]+\.)+[\w]+$')
         return True if email_address_matcher.match(email) else False
 
     @staticmethod
@@ -26,7 +26,7 @@ class Utils(object):
         Checks that the password the user sent matches that of the database.
         The database password is encrypted more than the user's password at this stage.
         :param password: sha512-hashed password
-        :param hashed_password: pbkdf2_sha512 encrypted password
+        :param hashed_password:  pbkdf2_sha512 encrypted password
         :return: True if passwords match, False otherwise
         """
         return pbkdf2_sha512.verify(password, hashed_password)

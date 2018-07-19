@@ -1,3 +1,4 @@
-__author__ = 'jslvtr'
+__author__ = 'nebby85'
 
-COLLECTION = 'users'
+
+COLLECTION = "users"

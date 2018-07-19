@@ -6,7 +6,7 @@ from src.common.database import Database
 import src.models.items.constants as ItemConstants
 from src.models.stores.store import Store
 
-__author__ = 'jslvtr'
+__author__ = 'nebby85'
 
 
 class Item(object):
@@ -35,7 +35,7 @@ class Item(object):
 
         return self.price
 
-    def save_to_mongo(self):
+    def save_to_db(self):
         Database.update(ItemConstants.COLLECTION, {'_id': self._id}, self.json())
 
     def json(self):

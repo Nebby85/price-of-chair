@@ -1,5 +1,8 @@
 from src.app import app
+import os
 
-__author__ = 'jslvtr'
+__author__ = 'nebby85'
 
-app.run(debug=app.config['DEBUG'], port=4990)
+
+if __name__ == "__main__":
+    app.run(debug=app.config['DEBUG'], port=5000)
