@@ -29,9 +29,10 @@ class Item(object):
         element = soup.find(self.tag_name, self.query)
         string_price = element.text.strip()
 
-        pattern = re.compile("(\d+.\d+)")
-        match = pattern.search(string_price)
-        self.price = float(match.group())
+        #pattern = re.compile("(\d+.\d+)")
+        #match = pattern.search(string_price)
+        #self.price = float(match.group())
+        self.price = string_price[1:]
 
         return self.price
 

@@ -1,4 +1,5 @@
 import pymongo
+import pymongo.errors
 import os
 
 __author__ = 'nebby85'
@@ -11,7 +12,10 @@ class Database(object):
     @staticmethod
     def initialise():
         client = pymongo.MongoClient(Database.URI)
-        Database.DATABASE = client.get_database()
+        try:
+            Database.DATABASE = client.get_database()
+        except pymongo.errors.ConfigurationError:
+            Database.DATABASE = client["fullstack"]
 
     @staticmethod
     def insert(collection, data):
